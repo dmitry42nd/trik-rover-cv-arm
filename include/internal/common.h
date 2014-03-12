@@ -35,8 +35,8 @@ typedef struct TargetDetectCommand
 
 typedef struct TargetLocation
 {
-  int m_targetX;
-  int m_targetY;
+  int m_targetX; //treeColor
+  int m_targetY; //treeColorEntry
   int m_targetSize;
 } TargetLocation;
 

@@ -456,7 +456,7 @@ int rcInputUnsafeReportTargetLocation(RCInput* _rc, const TargetLocation* _targe
     return EINVAL;
 
   if (!_rc->m_fifoOutputFd != -1)
-    dprintf(_rc->m_fifoOutputFd, "loc: %d %d %d\n", _targetLocation->m_targetX, _targetLocation->m_targetY, _targetLocation->m_targetSize);
+    dprintf(_rc->m_fifoOutputFd, "color: %d %d\n", _targetLocation->m_targetX, _targetLocation->m_targetY);
 
   return 0;
 }

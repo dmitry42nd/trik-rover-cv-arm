@@ -215,6 +215,7 @@ static int do_transcodeFrame(CodecEngine* _ce,
   tcInArgs.base.size = sizeof(tcInArgs);
   tcInArgs.base.numBytes = _srcFrameSize;
   tcInArgs.base.inputID = 1; // must be non-zero, otherwise caching issues appear
+/*
   tcInArgs.alg.detectHueFrom = makeValueWrap( _targetDetectParams->m_detectHue, -_targetDetectParams->m_detectHueTolerance, 0, 359);
   tcInArgs.alg.detectHueTo   = makeValueWrap( _targetDetectParams->m_detectHue, +_targetDetectParams->m_detectHueTolerance, 0, 359);
   tcInArgs.alg.detectSatFrom = makeValueRange(_targetDetectParams->m_detectSat, -_targetDetectParams->m_detectSatTolerance, 0, 100);
@@ -222,6 +223,7 @@ static int do_transcodeFrame(CodecEngine* _ce,
   tcInArgs.alg.detectValFrom = makeValueRange(_targetDetectParams->m_detectVal, -_targetDetectParams->m_detectValTolerance, 0, 100);
   tcInArgs.alg.detectValTo   = makeValueRange(_targetDetectParams->m_detectVal, +_targetDetectParams->m_detectValTolerance, 0, 100);
   tcInArgs.alg.autoDetectHsv = _targetDetectCommand->m_cmd;
+*/
 
   TRIK_VIDTRANSCODE_CV_OutArgs tcOutArgs;
   memset(&tcOutArgs,    0, sizeof(tcOutArgs));
@@ -275,8 +277,9 @@ static int do_transcodeFrame(CodecEngine* _ce,
 #warning This memcpy is blocking high fps
   memcpy(_dstFramePtr, _ce->m_dstBuffer, *_dstFrameUsed);
 
-  _targetLocation->m_targetX    = tcOutArgs.alg.targetX;
-  _targetLocation->m_targetY    = tcOutArgs.alg.targetY;
+  _targetLocation->m_targetX    = tcOutArgs.alg.outTreeColor;
+  _targetLocation->m_targetY    = tcOutArgs.alg.outTreeColorEntry;
+/*
   _targetLocation->m_targetSize = tcOutArgs.alg.targetSize;
 
   _targetDetectParamsResult->m_detectHue          = tcOutArgs.alg.detectHue;
@@ -285,6 +288,7 @@ static int do_transcodeFrame(CodecEngine* _ce,
   _targetDetectParamsResult->m_detectSatTolerance = tcOutArgs.alg.detectSatTolerance;
   _targetDetectParamsResult->m_detectVal          = tcOutArgs.alg.detectVal;
   _targetDetectParamsResult->m_detectValTolerance = tcOutArgs.alg.detectValTolerance;
+*/
 
   return 0;
 }
