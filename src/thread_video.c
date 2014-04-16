@@ -68,6 +68,7 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
   TargetDetectCommand targetDetectCommand;
   TargetLocation      targetLocation;
   TargetDetectParams  targetDetectParamsResult;
+  TargetColors      targetColors;
   if ((res = runtimeGetTargetDetectParams(_runtime, &targetDetectParams)) != 0)
   {
     fprintf(stderr, "runtimeGetTargetDetectParams() failed: %d\n", res);
@@ -85,7 +86,7 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
                                        frameDstPtr, frameDstSize, &frameDstUsed,
                                        &targetDetectParams,
                                        &targetDetectCommand,
-                                       &targetLocation,
+                                       &targetColors,
                                        &targetDetectParamsResult)) != 0)
   {
     fprintf(stderr, "codecEngineTranscodeFrame(%p[%zu] -> %p[%zu]) failed: %d\n",
@@ -119,9 +120,9 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
 
     case 0:
     default:
-      if ((res = runtimeReportTargetLocation(_runtime, &targetLocation)) != 0)
+      if ((res = runtimeReportTargetColors(_runtime, &targetColors)) != 0)
       {
-        fprintf(stderr, "runtimeReportTargetLocation() failed: %d\n", res);
+        fprintf(stderr, "runtimeReportTargetColors() failed: %d\n", res);
         return res;
       }
       break;

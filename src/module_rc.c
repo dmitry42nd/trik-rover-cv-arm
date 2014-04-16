@@ -456,7 +456,27 @@ int rcInputUnsafeReportTargetLocation(RCInput* _rc, const TargetLocation* _targe
     return EINVAL;
 
   if (!_rc->m_fifoOutputFd != -1)
-    dprintf(_rc->m_fifoOutputFd, "color: %d %d\n", _targetLocation->m_targetX, _targetLocation->m_targetY);
+    dprintf(_rc->m_fifoOutputFd, "loc: %d %d\n", _targetLocation->m_targetX, _targetLocation->m_targetY);
+
+  return 0;
+}
+
+#warning TODO code below if unsafe since it is used from another thread; consider reworking
+int rcInputUnsafeReportTargetColors(RCInput* _rc, const TargetColors* _targetColors)
+{
+  if (_rc == NULL || _targetColors == NULL)
+    return EINVAL;
+
+  if (!_rc->m_fifoOutputFd != -1)
+    dprintf(_rc->m_fifoOutputFd, "color: %d %d %d %d %d %d %d %d %d\n", _targetColors->m_colors[0],
+                                                                        _targetColors->m_colors[1],
+                                                                        _targetColors->m_colors[2],
+                                                                        _targetColors->m_colors[3],
+                                                                        _targetColors->m_colors[4],
+                                                                        _targetColors->m_colors[5],
+                                                                        _targetColors->m_colors[6],
+                                                                        _targetColors->m_colors[7],
+                                                                        _targetColors->m_colors[8]);
 
   return 0;
 }

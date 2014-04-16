@@ -439,6 +439,19 @@ int runtimeReportTargetLocation(Runtime* _runtime, const TargetLocation* _target
   return 0;
 }
 
+
+int runtimeReportTargetColors(Runtime* _runtime, const TargetColors* _targetColors)
+{
+  if (_runtime == NULL || _targetColors == NULL)
+    return EINVAL;
+
+#warning Unsafe
+  rcInputUnsafeReportTargetColors(&_runtime->m_modules.m_rcInput, _targetColors);
+
+  return 0;
+}
+
+
 int runtimeReportTargetDetectParams(Runtime* _runtime, const TargetDetectParams* _targetDetectParams)
 {
   if (_runtime == NULL || _targetDetectParams == NULL)

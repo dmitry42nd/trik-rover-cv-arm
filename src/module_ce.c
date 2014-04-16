@@ -197,14 +197,14 @@ static int do_transcodeFrame(CodecEngine* _ce,
                              void* _dstFramePtr, size_t _dstFrameSize, size_t* _dstFrameUsed,
                              const TargetDetectParams* _targetDetectParams,
                              const TargetDetectCommand* _targetDetectCommand,
-                             TargetLocation* _targetLocation,
+                             TargetColors* _targetColors,
                              TargetDetectParams* _targetDetectParamsResult)
 {
   if (_ce->m_srcBuffer == NULL || _ce->m_dstBuffer == NULL)
     return ENOTCONN;
   if (   _srcFramePtr == NULL || _dstFramePtr == NULL
       || _targetDetectParams == NULL || _targetDetectCommand == NULL
-      || _targetLocation == NULL || _targetDetectParamsResult == NULL)
+      || _targetColors == NULL || _targetDetectParamsResult == NULL)
     return EINVAL;
   if (_srcFrameSize > _ce->m_srcBufferSize || _dstFrameSize > _ce->m_dstBufferSize)
     return ENOSPC;
@@ -277,8 +277,19 @@ static int do_transcodeFrame(CodecEngine* _ce,
 #warning This memcpy is blocking high fps
   memcpy(_dstFramePtr, _ce->m_dstBuffer, *_dstFrameUsed);
 
-  _targetLocation->m_targetX    = tcOutArgs.alg.outTreeColor;
+/*  _targetLocation->m_targetX    = tcOutArgs.alg.outTreeColor;
   _targetLocation->m_targetY    = tcOutArgs.alg.outTreeColorEntry;
+*/
+
+  memcpy(_targetColors, tcOutArgs.alg.outColor, sizeof(uint32_t)*9);
+/*
+  int i = 0;
+  fprintf(stderr,"colors:");
+  for(i = 0; i < 9; i++)
+    fprintf(stderr, " %d",_targetColors->m_colors[i]);
+  fprintf(stderr,"\n");
+*/  
+
 /*
   _targetLocation->m_targetSize = tcOutArgs.alg.targetSize;
 
@@ -446,12 +457,12 @@ int codecEngineTranscodeFrame(CodecEngine* _ce,
                               void* _dstFramePtr, size_t _dstFrameSize, size_t* _dstFrameUsed,
                               const TargetDetectParams* _targetDetectParams,
                               const TargetDetectCommand* _targetDetectCommand,
-                              TargetLocation* _targetLocation,
+                              TargetColors* _targetColors,
                               TargetDetectParams* _targetDetectParamsResult)
 {
   int res;
 
-  if (_ce == NULL || _targetDetectParams == NULL || _targetDetectCommand == NULL || _targetLocation == NULL || _targetDetectParamsResult == NULL)
+  if (_ce == NULL || _targetDetectParams == NULL || _targetDetectCommand == NULL || _targetColors == NULL || _targetDetectParamsResult == NULL)
     return EINVAL;
 
   if (_ce->m_handle == NULL)
@@ -462,18 +473,13 @@ int codecEngineTranscodeFrame(CodecEngine* _ce,
                           _dstFramePtr, _dstFrameSize, _dstFrameUsed,
                           _targetDetectParams,
                           _targetDetectCommand,
-                          _targetLocation,
+                          _targetColors,
                           _targetDetectParamsResult);
 
   if (s_verbose)
   {
     fprintf(stderr, "Transcoded frame %p[%zu] -> %p[%zu/%zu]\n",
             _srcFramePtr, _srcFrameSize, _dstFramePtr, _dstFrameSize, *_dstFrameUsed);
-    if (_targetLocation->m_targetSize > 0)
-      fprintf(stderr, "Target detected at %d x %d @ %d\n",
-              _targetLocation->m_targetX,
-              _targetLocation->m_targetY,
-              _targetLocation->m_targetSize);
   }
 
   return res;
