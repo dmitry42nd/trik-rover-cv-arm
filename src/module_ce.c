@@ -216,13 +216,8 @@ static int do_transcodeFrame(CodecEngine* _ce,
   tcInArgs.base.numBytes = _srcFrameSize;
   tcInArgs.base.inputID = 1; // must be non-zero, otherwise caching issues appear
 /*
-  tcInArgs.alg.detectHueFrom = makeValueWrap( _targetDetectParams->m_detectHue, -_targetDetectParams->m_detectHueTolerance, 0, 359);
-  tcInArgs.alg.detectHueTo   = makeValueWrap( _targetDetectParams->m_detectHue, +_targetDetectParams->m_detectHueTolerance, 0, 359);
-  tcInArgs.alg.detectSatFrom = makeValueRange(_targetDetectParams->m_detectSat, -_targetDetectParams->m_detectSatTolerance, 0, 100);
-  tcInArgs.alg.detectSatTo   = makeValueRange(_targetDetectParams->m_detectSat, +_targetDetectParams->m_detectSatTolerance, 0, 100);
-  tcInArgs.alg.detectValFrom = makeValueRange(_targetDetectParams->m_detectVal, -_targetDetectParams->m_detectValTolerance, 0, 100);
-  tcInArgs.alg.detectValTo   = makeValueRange(_targetDetectParams->m_detectVal, +_targetDetectParams->m_detectValTolerance, 0, 100);
-  tcInArgs.alg.autoDetectHsv = _targetDetectCommand->m_cmd;
+  tcInArgs.alg.m = _targetColors->m;
+  tcInArgs.alg.n = _targetColors->n;
 */
 
   TRIK_VIDTRANSCODE_CV_OutArgs tcOutArgs;
