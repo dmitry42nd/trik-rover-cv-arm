@@ -468,15 +468,16 @@ int rcInputUnsafeReportTargetColors(RCInput* _rc, const TargetColors* _targetCol
     return EINVAL;
 
   if (!_rc->m_fifoOutputFd != -1)
-    dprintf(_rc->m_fifoOutputFd, "color: %d %d %d %d %d %d %d %d %d\n", _targetColors->m_colors[0],
-                                                                        _targetColors->m_colors[1],
-                                                                        _targetColors->m_colors[2],
-                                                                        _targetColors->m_colors[3],
-                                                                        _targetColors->m_colors[4],
-                                                                        _targetColors->m_colors[5],
-                                                                        _targetColors->m_colors[6],
-                                                                        _targetColors->m_colors[7],
-                                                                        _targetColors->m_colors[8]);
+  {
+    dprintf(_rc->m_fifoOutputFd, "color: ");
+    int i = 0;
+    for (i=0; i < COLORS_NUM; i++)
+    {
+      dprintf(_rc->m_fifoOutputFd, "%d ", _targetColors->m_colors[i]);
+    }
+
+    dprintf(_rc->m_fifoOutputFd, "\n");
+  }
 
   return 0;
 }

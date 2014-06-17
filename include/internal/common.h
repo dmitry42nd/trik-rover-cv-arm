@@ -8,6 +8,8 @@
 extern "C" {
 #endif // __cplusplus
 
+#define COLORS_NUM   16
+
 
 typedef struct ImageDescription
 {
@@ -40,10 +42,9 @@ typedef struct TargetLocation
   int m_targetSize;
 } TargetLocation;
 
-
 typedef struct TargetColors
 {
-  uint32_t m_colors[9]; //treeColor
+  uint32_t m_colors[COLORS_NUM]; //treeColor
 } TargetColors;
 
 #ifdef __cplusplus

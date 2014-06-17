@@ -276,14 +276,7 @@ static int do_transcodeFrame(CodecEngine* _ce,
   _targetLocation->m_targetY    = tcOutArgs.alg.outTreeColorEntry;
 */
 
-  memcpy(_targetColors, tcOutArgs.alg.outColor, sizeof(uint32_t)*9);
-/*
-  int i = 0;
-  fprintf(stderr,"colors:");
-  for(i = 0; i < 9; i++)
-    fprintf(stderr, " %d",_targetColors->m_colors[i]);
-  fprintf(stderr,"\n");
-*/  
+  memcpy(_targetColors, tcOutArgs.alg.outColor, sizeof(uint32_t)*COLORS_NUM);
 
 /*
   _targetLocation->m_targetSize = tcOutArgs.alg.targetSize;
