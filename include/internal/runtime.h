@@ -88,6 +88,7 @@ int  runtimeFetchTargetDetectCommand(Runtime* _runtime, TargetDetectCommand* _ta
 int  runtimeSetTargetDetectCommand(Runtime* _runtime, const TargetDetectCommand* _targetDetectCommand);
 
 int  runtimeReportTargetLocation(Runtime* _runtime, const TargetLocation* _targetLocation);
+int  runtimeReportTargetColors(Runtime* _runtime, const TargetColors* _targetColors);
 int  runtimeReportTargetDetectParams(Runtime* _runtime, const TargetDetectParams* _targetDetectParams);
 
 
