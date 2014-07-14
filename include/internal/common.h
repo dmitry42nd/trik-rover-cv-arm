@@ -9,6 +9,8 @@ extern "C" {
 #endif // __cplusplus
 
 #define COLORS_NUM   16
+#define COLORS_WIDTHM   10
+#define COLORS_HEIGHTN   5
 
 
 typedef struct ImageDescription

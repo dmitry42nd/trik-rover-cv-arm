@@ -88,7 +88,7 @@ static XDAS_Int32 do_convertPixelFormat(CodecEngine* _ce, uint32_t _format)
     case V4L2_PIX_FMT_RGB565X:	return TRIK_VIDTRANSCODE_CV_VIDEO_FORMAT_RGB565X;
     case V4L2_PIX_FMT_YUV32:	return TRIK_VIDTRANSCODE_CV_VIDEO_FORMAT_YUV444;
     case V4L2_PIX_FMT_YUYV:	return TRIK_VIDTRANSCODE_CV_VIDEO_FORMAT_YUV422;
-    case V4L2_PIX_FMT_YUV422P:	return TRIK_VIDTRANSCODE_CV_VIDEO_FORMAT_YUV422P;
+//    case V4L2_PIX_FMT_YUV422P:	return TRIK_VIDTRANSCODE_CV_VIDEO_FORMAT_YUV422P;
     default:
       fprintf(stderr, "Unknown pixel format %c%c%c%c\n",
               _format&0xff, (_format>>8)&0xff, (_format>>16)&0xff, (_format>>24)&0xff);
@@ -216,10 +216,10 @@ static int do_transcodeFrame(CodecEngine* _ce,
   tcInArgs.base.size = sizeof(tcInArgs);
   tcInArgs.base.numBytes = _srcFrameSize;
   tcInArgs.base.inputID = 1; // must be non-zero, otherwise caching issues appear
-/*
-  tcInArgs.alg.m = _targetColors->m;
-  tcInArgs.alg.n = _targetColors->n;
-*/
+
+  tcInArgs.alg.widthM  = COLORS_WIDTHM;
+  tcInArgs.alg.heightN = COLORS_HEIGHTN;
+
 
   TRIK_VIDTRANSCODE_CV_OutArgs tcOutArgs;
   memset(&tcOutArgs,    0, sizeof(tcOutArgs));
@@ -277,18 +277,7 @@ static int do_transcodeFrame(CodecEngine* _ce,
   _targetLocation->m_targetY    = tcOutArgs.alg.outTreeColorEntry;
 */
 
-  memcpy(_targetColors, tcOutArgs.alg.outColor, sizeof(uint32_t)*COLORS_NUM);
-
-/*
-  _targetLocation->m_targetSize = tcOutArgs.alg.targetSize;
-
-  _targetDetectParamsResult->m_detectHue          = tcOutArgs.alg.detectHue;
-  _targetDetectParamsResult->m_detectHueTolerance = tcOutArgs.alg.detectHueTolerance;
-  _targetDetectParamsResult->m_detectSat          = tcOutArgs.alg.detectSat;
-  _targetDetectParamsResult->m_detectSatTolerance = tcOutArgs.alg.detectSatTolerance;
-  _targetDetectParamsResult->m_detectVal          = tcOutArgs.alg.detectVal;
-  _targetDetectParamsResult->m_detectValTolerance = tcOutArgs.alg.detectValTolerance;
-*/
+  memcpy(_targetColors, tcOutArgs.alg.outColor, sizeof(uint32_t)*COLORS_WIDTHM*COLORS_HEIGHTN);
 
   return 0;
 }
