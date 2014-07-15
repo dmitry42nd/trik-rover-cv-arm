@@ -307,6 +307,19 @@ static int do_readFifoInput(RCInput* _rc)
         _rc->m_targetDetectParamsUpdated = true;
       }
     }
+    else if (strncmp(parseAt, "video_out ", strlen("video_out ")) == 0)
+    {
+      bool videoOutEnable;
+      parseAt += strlen("video_out ");
+
+      if ((sscanf(parseAt, "%d", &videoOutEnable)) != 1)
+        fprintf(stderr, "Cannot parse video_out command, args '%s'\n", parseAt);
+      else
+      {
+        _rc->m_videoOutEnable        = videoOutEnable;
+        _rc->m_videoOutParamsUpdated = true;
+      }
+    }
     else
       fprintf(stderr, "Unknown command '%s'\n", parseAt);
 
@@ -353,6 +366,7 @@ int rcInputOpen(RCInput* _rc, const RCConfig* _config)
   _rc->m_fifoInputReadBufferUsed = 0;
   _rc->m_fifoInputReadBuffer = malloc(_rc->m_fifoInputReadBufferSize);
 
+  _rc->m_videoOutEnable = _config->m_videoOutEnable;
   return 0;
 }
 
@@ -431,6 +445,19 @@ int rcInputGetTargetDetectParams(RCInput* _rc,
   _targetDetectParams->m_detectSatTolerance = _rc->m_targetDetectSatTolerance;
   _targetDetectParams->m_detectVal          = _rc->m_targetDetectVal;
   _targetDetectParams->m_detectValTolerance = _rc->m_targetDetectValTolerance;
+
+  return 0;
+}
+
+
+int rcInputGetVideoOutParams(RCInput* _rc,
+                             bool *_videoOutEnable)
+{
+  if (_rc == NULL || _videoOutEnable == NULL)
+    return EINVAL;
+
+  _rc->m_videoOutParamsUpdated = false;
+  *_videoOutEnable             = _rc->m_videoOutEnable;
 
   return 0;
 }

@@ -273,7 +273,8 @@ static int do_transcodeFrame(CodecEngine* _ce,
     *_dstFrameUsed = tcOutArgs.base.encodedBuf[0].bufSize;
 
 #warning This memcpy is blocking high fps
-  memcpy(_dstFramePtr, _ce->m_dstBuffer, *_dstFrameUsed);
+  if(_ce->m_videoOutEnable)
+    memcpy(_dstFramePtr, _ce->m_dstBuffer, *_dstFrameUsed);
 
   _targetLocation->m_targetX    = tcOutArgs.alg.targetX;
   _targetLocation->m_targetY    = tcOutArgs.alg.targetY;

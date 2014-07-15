@@ -46,6 +46,7 @@ typedef struct RuntimeState
   pthread_mutex_t         m_mutex;
   TargetDetectParams      m_targetDetectParams;
   TargetDetectCommand     m_targetDetectCommand;
+  bool                    m_videoOutEnable;
 } RuntimeState;
 
 typedef struct Runtime
@@ -86,6 +87,9 @@ int  runtimeGetTargetDetectParams(Runtime* _runtime, TargetDetectParams* _target
 int  runtimeSetTargetDetectParams(Runtime* _runtime, const TargetDetectParams* _targetDetectParams);
 int  runtimeFetchTargetDetectCommand(Runtime* _runtime, TargetDetectCommand* _targetDetectCommand);
 int  runtimeSetTargetDetectCommand(Runtime* _runtime, const TargetDetectCommand* _targetDetectCommand);
+
+int runtimeGetVideoOutParams(Runtime* _runtime, bool* _videoOutEnable);
+int runtimeSetVideoOutParams(Runtime* _runtime, const bool* _videoOutEnable);
 
 int  runtimeReportTargetLocation(Runtime* _runtime, const TargetLocation* _targetLocation);
 int  runtimeReportTargetDetectParams(Runtime* _runtime, const TargetDetectParams* _targetDetectParams);

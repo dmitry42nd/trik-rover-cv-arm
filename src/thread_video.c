@@ -15,8 +15,6 @@
 #include "internal/module_v4l2.h"
 
 
-
-
 static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input* _v4l2, FBOutput* _fb)
 {
   int res;
@@ -57,6 +55,8 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
 
   void* frameDstPtr;
   size_t frameDstSize;
+
+
   if ((res = fbOutputGetFrame(_fb, &frameDstPtr, &frameDstSize)) != 0)
   {
     fprintf(stderr, "fbOutputGetFrame() failed: %d\n", res);
@@ -78,6 +78,13 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
     fprintf(stderr, "runtimeGetTargetDetectCommand() failed: %d\n", res);
     return res;
   }
+
+  if ((res = runtimeGetVideoOutParams(_runtime, &(_ce->m_videoOutEnable))) != 0)
+  {
+    fprintf(stderr, "runtimeGetVideoOutParams() failed: %d\n", res);
+    return res;
+  }
+
 
   size_t frameDstUsed = frameDstSize;
   if ((res = codecEngineTranscodeFrame(_ce,
@@ -165,6 +172,7 @@ void* threadVideo(void* _arg)
     goto exit;
   }
 
+
   if ((res = v4l2InputOpen(v4l2, runtimeCfgV4L2Input(runtime))) != 0)
   {
     fprintf(stderr, "v4l2InputOpen() failed: %d\n", res);
@@ -207,6 +215,7 @@ void* threadVideo(void* _arg)
     exit_code = res;
     goto exit_ce_stop;
   }
+
 
   if ((res = fbOutputStart(fb)) != 0)
   {

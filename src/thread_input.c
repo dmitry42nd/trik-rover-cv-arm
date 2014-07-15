@@ -69,6 +69,25 @@ static int threadInputSelectLoop(Runtime* _runtime, RCInput* _rc)
     }
   }
 
+  bool videoOutEnable;
+  if ((res = rcInputGetVideoOutParams(_rc, &videoOutEnable)) != 0)
+  {
+    if (res != ENODATA)
+    {
+      fprintf(stderr, "rcInputGetVideoOutParams() failed: %d\n", res);
+      return res;
+    }
+  }
+  else
+  {
+    if ((res = runtimeSetVideoOutParams(_runtime, &videoOutEnable)) != 0)
+    {
+      fprintf(stderr, "runtimeSetVideoOutParams() failed: %d\n", res);
+      return res;
+    }
+  }
+
+
   TargetDetectCommand targetDetectCommand;
   if ((res = rcInputGetTargetDetectCommand(_rc, &targetDetectCommand)) != 0)
   {

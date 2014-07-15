@@ -14,6 +14,7 @@ typedef struct RCConfig // what user wants to set
 {
   const char* m_fifoInput;
   const char* m_fifoOutput;
+  bool m_videoOutEnable;
 } RCConfig;
 
 typedef struct RCInput
@@ -37,6 +38,9 @@ typedef struct RCInput
 
   bool                     m_targetDetectCommandUpdated;
   int                      m_targetDetectCommand;
+
+  bool                     m_videoOutParamsUpdated;
+  bool                     m_videoOutEnable;
 } RCInput;
 
 
@@ -54,6 +58,8 @@ int rcInputReadFifoInput(RCInput* _rc);
 
 int rcInputGetTargetDetectParams(RCInput* _rc, TargetDetectParams* _targetDetectParams);
 int rcInputGetTargetDetectCommand(RCInput* _rc, TargetDetectCommand* _targetDetectCommand);
+
+int rcInputGetVideoOutParams(RCInput* _rc, bool *_videoOutEnable);
 
 int rcInputUnsafeReportTargetLocation(RCInput* _rc, const TargetLocation* _targetLocation);
 int rcInputUnsafeReportTargetDetectParams(RCInput* _rc, const TargetDetectParams* _targetDetectParams);
