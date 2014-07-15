@@ -69,6 +69,7 @@ bool runtimeParseArgs(Runtime* _runtime, int _argc, char* const _argv[])
     { "fb-path",		1,	NULL,	0   }, // 6
     { "rc-fifo-in",		1,	NULL,	0   }, // 7
     { "rc-fifo-out",		1,	NULL,	0   },
+    { "video-out",		1,	NULL,	0   },
     { "verbose",		0,	NULL,	'v' },
     { "help",			0,	NULL,	'h' },
     { NULL,			0,	NULL,	0   }
@@ -114,6 +115,7 @@ bool runtimeParseArgs(Runtime* _runtime, int _argc, char* const _argv[])
 
           case 7  : cfg->m_rcConfig.m_fifoInput  = optarg;					break;
           case 7+1: cfg->m_rcConfig.m_fifoOutput = optarg;					break;
+          case 7+2: cfg->m_rcConfig.m_videoOutEnable = atoi(optarg); break;
 
           default:
             return false;
@@ -149,6 +151,7 @@ void runtimeArgsHelpMessage(Runtime* _runtime, const char* _arg0)
                   "   --fb-path      <output-device-path>\n"
                   "   --rc-fifo-in            <remote-control-fifo-input>\n"
                   "   --rc-fifo-out           <remote-control-fifo-output>\n"
+                  "   --video-out             <enable-video-output>\n"
                   "   --verbose\n"
                   "   --help\n",
           _arg0);
@@ -405,6 +408,28 @@ int runtimeSetTargetDetectParams(Runtime* _runtime, const TargetDetectParams* _t
   return 0;
 }
 
+int runtimeGetVideoOutParams(Runtime* _runtime, bool* _videoOutEnable)
+{
+  if (_runtime == NULL || _videoOutEnable == NULL)
+    return EINVAL;
+
+  pthread_mutex_lock(&_runtime->m_state.m_mutex);
+  *_videoOutEnable = _runtime->m_state.m_videoOutEnable;
+  pthread_mutex_unlock(&_runtime->m_state.m_mutex);
+  return 0;
+}
+
+int runtimeSetVideoOutParams(Runtime* _runtime, const bool* _videoOutEnable)
+{
+  if (_runtime == NULL || _videoOutEnable == NULL)
+    return EINVAL;
+
+  pthread_mutex_lock(&_runtime->m_state.m_mutex);
+  _runtime->m_state.m_videoOutEnable = *_videoOutEnable;
+  pthread_mutex_unlock(&_runtime->m_state.m_mutex);
+  return 0;
+}
+
 int runtimeFetchTargetDetectCommand(Runtime* _runtime, TargetDetectCommand* _targetDetectCommand)
 {
   if (_runtime == NULL || _targetDetectCommand == NULL)
@@ -439,7 +464,6 @@ int runtimeReportTargetLocation(Runtime* _runtime, const TargetLocation* _target
   return 0;
 }
 
-
 int runtimeReportTargetColors(Runtime* _runtime, const TargetColors* _targetColors)
 {
   if (_runtime == NULL || _targetColors == NULL)
@@ -450,7 +474,6 @@ int runtimeReportTargetColors(Runtime* _runtime, const TargetColors* _targetColo
 
   return 0;
 }
-
 
 int runtimeReportTargetDetectParams(Runtime* _runtime, const TargetDetectParams* _targetDetectParams)
 {

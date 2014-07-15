@@ -34,6 +34,8 @@ typedef struct CodecEngine
   void*      m_dstBuffer;
 
   VIDTRANSCODE_Handle m_vidtranscodeHandle;
+
+  bool m_videoOutEnable;
 } CodecEngine;
 
 
