@@ -16,7 +16,7 @@
 
 static const RuntimeConfig s_runtimeConfig = {
   .m_verbose = false,
-  .m_codecEngineConfig = { "dsp_server.xe674", "vidtranscode_cv" },
+  .m_codecEngineConfig = { "dsp_server.xe674", "vidtranscode_cv", 3, 3 },
   .m_v4l2Config        = { "/dev/video0", 320, 240, V4L2_PIX_FMT_YUYV },
   .m_fbConfig          = { "/dev/fb0" },
   .m_rcConfig          = { "/tmp/mxn-sensor.in.fifo", "/tmp/mxn-sensor.out.fifo", true }
@@ -69,7 +69,9 @@ bool runtimeParseArgs(Runtime* _runtime, int _argc, char* const _argv[])
     { "fb-path",		1,	NULL,	0   }, // 6
     { "rc-fifo-in",		1,	NULL,	0   }, // 7
     { "rc-fifo-out",		1,	NULL,	0   },
-    { "video-out",		1,	NULL,	0   },
+    { "video-out",		1,	NULL,	0   }, //7+2
+    { "mxn-width-m",		1,	NULL,	0   }, //7+3
+    { "mxn-height-n",		1,	NULL,	0   }, //7+4
     { "verbose",		0,	NULL,	'v' },
     { "help",			0,	NULL,	'h' },
     { NULL,			0,	NULL,	0   }
@@ -117,6 +119,9 @@ bool runtimeParseArgs(Runtime* _runtime, int _argc, char* const _argv[])
           case 7+1: cfg->m_rcConfig.m_fifoOutput = optarg;					break;
           case 7+2: cfg->m_rcConfig.m_videoOutEnable = atoi(optarg); break;
 
+          case 7+3: cfg->m_codecEngineConfig.m_widthM = atoi(optarg); break;
+          case 7+4: cfg->m_codecEngineConfig.m_heightN = atoi(optarg); break;
+
           default:
             return false;
         }
@@ -142,16 +147,20 @@ void runtimeArgsHelpMessage(Runtime* _runtime, const char* _arg0)
   fprintf(stderr, "Usage:\n"
                   "    %s <opts>\n"
                   " where opts are:\n"
-                  "   --ce-server    <dsp-server-name>\n"
-                  "   --ce-codec     <dsp-codec-name>\n"
-                  "   --v4l2-path    <input-device-path>\n"
-                  "   --v4l2-width   <input-width>\n"
-                  "   --v4l2-height  <input-height>\n"
-                  "   --v4l2-format  <input-pixel-format>\n"
-                  "   --fb-path      <output-device-path>\n"
-                  "   --rc-fifo-in            <remote-control-fifo-input>\n"
-                  "   --rc-fifo-out           <remote-control-fifo-output>\n"
-                  "   --video-out             <enable-video-output>\n"
+                  "   --ce-server     <dsp-server-name>\n"
+                  "   --ce-codec      <dsp-codec-name>\n"
+                  "   --v4l2-path     <input-device-path>\n"
+                  "   --v4l2-width    <input-width>\n"
+                  "   --v4l2-height   <input-height>\n"
+                  "   --v4l2-format   <input-pixel-format>\n"
+                  "   --fb-path       <output-device-path>\n"
+                  "   --rc-fifo-in    <remote-control-fifo-input>\n"
+                  "   --rc-fifo-out   <remote-control-fifo-output>\n"
+                  "   --video-out     <enable-video-output>\n"
+
+                  "   --mxn-width-m   <mxn-width-m>\n"
+                  "   --mxn-height-n  <mxn-heigth-n>\n"
+
                   "   --verbose\n"
                   "   --help\n",
           _arg0);

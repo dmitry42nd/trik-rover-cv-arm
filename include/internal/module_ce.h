@@ -20,6 +20,8 @@ typedef struct CodecEngineConfig // what user wants to set
 {
   const char* m_serverPath;
   const char* m_codecName;
+  int m_widthM;
+  int m_heightN;
 } CodecEngineConfig;
 
 typedef struct CodecEngine
@@ -36,6 +38,8 @@ typedef struct CodecEngine
   VIDTRANSCODE_Handle m_vidtranscodeHandle;
 
   bool m_videoOutEnable;
+  int m_widthM;
+  int m_heightN;
 } CodecEngine;
 
 
