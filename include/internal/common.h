@@ -10,7 +10,7 @@ extern "C" {
 
 #define COLORS_NUM   16
 #define COLORS_WIDTHM   10
-#define COLORS_HEIGHTN   5
+#define COLORS_HEIGHTN  3
 
 
 typedef struct ImageDescription
