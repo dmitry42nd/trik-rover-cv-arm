@@ -41,6 +41,8 @@ typedef struct RCInput
 
   bool                     m_videoOutParamsUpdated;
   bool                     m_videoOutEnable;
+  int                      m_widthM;
+  int                      m_heightN;
 } RCInput;
 
 

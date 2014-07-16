@@ -23,8 +23,6 @@ static const RuntimeConfig s_runtimeConfig = {
 };
 
 
-
-
 void runtimeReset(Runtime* _runtime)
 {
   memset(_runtime, 0, sizeof(*_runtime));
@@ -118,9 +116,14 @@ bool runtimeParseArgs(Runtime* _runtime, int _argc, char* const _argv[])
           case 7  : cfg->m_rcConfig.m_fifoInput  = optarg;					break;
           case 7+1: cfg->m_rcConfig.m_fifoOutput = optarg;					break;
           case 7+2: cfg->m_rcConfig.m_videoOutEnable = atoi(optarg); break;
-
-          case 7+3: cfg->m_codecEngineConfig.m_widthM = atoi(optarg); break;
-          case 7+4: cfg->m_codecEngineConfig.m_heightN = atoi(optarg); break;
+          case 7+3: 
+            _runtime->m_modules.m_rcInput.m_widthM = 
+            cfg->m_codecEngineConfig.m_widthM = atoi(optarg) < COLORS_WIDTHM_MAX ? atoi(optarg) : COLORS_WIDTHM_MAX; 
+            break;
+          case 7+4: 
+            _runtime->m_modules.m_rcInput.m_heightN = 
+            cfg->m_codecEngineConfig.m_heightN = atoi(optarg) < COLORS_HEIGHTN_MAX ? atoi(optarg) : COLORS_HEIGHTN_MAX; 
+            break;
 
           default:
             return false;
