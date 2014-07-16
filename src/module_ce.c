@@ -96,8 +96,6 @@ static XDAS_Int32 do_convertPixelFormat(CodecEngine* _ce, uint32_t _format)
   }
 }
 
-#define max(x, y) x > y ? x : y;
-
 static int do_setupCodec(CodecEngine* _ce, const char* _codecName,
                          const ImageDescription* _srcImageDesc,
                          const ImageDescription* _dstImageDesc)
@@ -124,6 +122,7 @@ static int do_setupCodec(CodecEngine* _ce, const char* _codecName,
   ceParams.base.numOutputStreams = 1;
   ceParams.base.formatInput = do_convertPixelFormat(_ce, _srcImageDesc->m_format);
   ceParams.base.formatOutput[0] = do_convertPixelFormat(_ce, _dstImageDesc->m_format);
+#define max(x, y) x > y ? x : y;
   ceParams.base.maxHeightInput = max(_srcImageDesc->m_height,_srcImageDesc->m_width);
   ceParams.base.maxWidthInput = max(_srcImageDesc->m_height,_srcImageDesc->m_width);
   ceParams.base.maxHeightOutput[0] = max(_dstImageDesc->m_height,_dstImageDesc->m_width);
