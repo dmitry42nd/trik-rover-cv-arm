@@ -88,6 +88,24 @@ static int threadInputSelectLoop(Runtime* _runtime, RCInput* _rc)
   }
 
 
+  MxnParams mxnParams;
+  if ((res = rcInputGetMxnParams(_rc, &mxnParams)) != 0)
+  {
+    if (res != ENODATA)
+    {
+      fprintf(stderr, "rcInputGetMxnParamsParams() failed: %d\n", res);
+      return res;
+    }
+  }
+  else
+  {
+    if ((res = runtimeSetMxnParams(_runtime, &mxnParams)) != 0)
+    {
+      fprintf(stderr, "runtimeSetMxnParams() failed: %d\n", res);
+      return res;
+    }
+  }
+
   TargetDetectCommand targetDetectCommand;
   if ((res = rcInputGetTargetDetectCommand(_rc, &targetDetectCommand)) != 0)
   {

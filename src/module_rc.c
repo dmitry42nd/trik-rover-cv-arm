@@ -307,6 +307,20 @@ static int do_readFifoInput(RCInput* _rc)
         _rc->m_targetDetectParamsUpdated = true;
       }
     }
+    else if (strncmp(parseAt, "mxn ", strlen("mxn ")) == 0)
+    {
+      int m, n;
+      parseAt += strlen("mxn ");
+
+      if ((sscanf(parseAt, "%d %d", &m, &n)) != 2)
+        fprintf(stderr, "Cannot parse mxn command, args '%s'\n", parseAt);
+      else
+      {
+        _rc->m_mxnParams.m_m    = m < COLORS_WIDTHM_MAX ? m : COLORS_WIDTHM_MAX;
+        _rc->m_mxnParams.m_n    = n < COLORS_HEIGHTN_MAX ? n : COLORS_HEIGHTN_MAX;;
+        _rc->m_mxnParamsUpdated = true;
+      }
+    }
     else if (strncmp(parseAt, "video_out ", strlen("video_out ")) == 0)
     {
       bool videoOutEnable;
@@ -367,6 +381,7 @@ int rcInputOpen(RCInput* _rc, const RCConfig* _config)
   _rc->m_fifoInputReadBuffer = malloc(_rc->m_fifoInputReadBufferSize);
 
   _rc->m_videoOutEnable = _config->m_videoOutEnable;
+  _rc->m_mxnParams      = _config->m_mxnParams;
   return 0;
 }
 
@@ -462,6 +477,18 @@ int rcInputGetVideoOutParams(RCInput* _rc,
   return 0;
 }
 
+int rcInputGetMxnParams(RCInput* _rc,
+                             MxnParams *_mxnParams)
+{
+  if (_rc == NULL || _mxnParams == NULL)
+    return EINVAL;
+
+  _rc->m_mxnParamsUpdated = false;
+  *_mxnParams              = _rc->m_mxnParams;
+
+  return 0;
+}
+
 int rcInputGetTargetDetectCommand(RCInput* _rc, TargetDetectCommand* _targetDetectCommand)
 {
   if (_rc == NULL || _targetDetectCommand == NULL)
@@ -498,7 +525,7 @@ int rcInputUnsafeReportTargetColors(RCInput* _rc, const TargetColors* _targetCol
   {
     dprintf(_rc->m_fifoOutputFd, "color: ");
     int i = 0;
-    for (i = 0; i < _rc->m_widthM * _rc->m_heightN; i++)
+    for (i = 0; i < _rc->m_mxnParams.m_m * _rc->m_mxnParams.m_n; i++)
     {
       dprintf(_rc->m_fifoOutputFd, "%d ", _targetColors->m_colors[i]);
     }

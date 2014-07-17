@@ -218,8 +218,8 @@ static int do_transcodeFrame(CodecEngine* _ce,
   tcInArgs.base.numBytes = _srcFrameSize;
   tcInArgs.base.inputID = 1; // must be non-zero, otherwise caching issues appear
 
-  tcInArgs.alg.widthM  = _ce->m_widthM;
-  tcInArgs.alg.heightN = _ce->m_heightN;
+  tcInArgs.alg.widthM  = _ce->m_mxnParams.m_m;
+  tcInArgs.alg.heightN = _ce->m_mxnParams.m_n;
 
 
   TRIK_VIDTRANSCODE_CV_OutArgs tcOutArgs;
@@ -279,7 +279,7 @@ static int do_transcodeFrame(CodecEngine* _ce,
   _targetLocation->m_targetY    = tcOutArgs.alg.outTreeColorEntry;
 */
 
-  memcpy(_targetColors, tcOutArgs.alg.outColor, sizeof(uint32_t)*_ce->m_heightN*_ce->m_widthM);
+  memcpy(_targetColors, tcOutArgs.alg.outColor, sizeof(uint32_t)*_ce->m_mxnParams.m_m*_ce->m_mxnParams.m_n);
 
   return 0;
 }
@@ -414,9 +414,6 @@ int codecEngineStart(CodecEngine* _ce, const CodecEngineConfig* _config,
     do_memoryFree(_ce);
     return res;
   }
-
-  _ce->m_widthM  = _config->m_widthM;
-  _ce->m_heightN = _config->m_heightN;
 
   return 0;
 }

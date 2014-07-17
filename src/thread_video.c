@@ -67,6 +67,7 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
   TargetLocation      targetLocation;
   TargetDetectParams  targetDetectParamsResult;
   TargetColors      targetColors;
+  MxnParams         mxnParams;
   if ((res = runtimeGetTargetDetectParams(_runtime, &targetDetectParams)) != 0)
   {
     fprintf(stderr, "runtimeGetTargetDetectParams() failed: %d\n", res);
@@ -74,11 +75,17 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
   }
   if ((res = runtimeFetchTargetDetectCommand(_runtime, &targetDetectCommand)) != 0)
   {
-    fprintf(stderr, "runtimeGetTargetDetectCommand() failed: %d\n", res);
+    fprintf(stderr, "runtimeFetchTargetDetectCommand() failed: %d\n", res);
     return res;
   }
 
   if ((res = runtimeGetVideoOutParams(_runtime, &(_ce->m_videoOutEnable))) != 0)
+  {
+    fprintf(stderr, "runtimeGetVideoOutParams() failed: %d\n", res);
+    return res;
+  }
+
+  if ((res = runtimeGetMxnParams(_runtime, &(_ce->m_mxnParams))) != 0)
   {
     fprintf(stderr, "runtimeGetVideoOutParams() failed: %d\n", res);
     return res;

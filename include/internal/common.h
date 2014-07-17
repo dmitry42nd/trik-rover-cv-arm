@@ -12,6 +12,11 @@ extern "C" {
 #define COLORS_WIDTHM_MAX   10
 #define COLORS_HEIGHTN_MAX  10
 
+typedef struct MxnParams
+{
+  size_t m_m;
+  size_t m_n;
+} MxnParams;
 
 typedef struct ImageDescription
 {

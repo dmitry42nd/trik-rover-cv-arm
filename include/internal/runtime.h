@@ -47,6 +47,7 @@ typedef struct RuntimeState
   TargetDetectParams      m_targetDetectParams;
   TargetDetectCommand     m_targetDetectCommand;
   bool                    m_videoOutEnable;
+  MxnParams               m_mxnParams
 } RuntimeState;
 
 typedef struct Runtime
@@ -90,6 +91,8 @@ int  runtimeSetTargetDetectCommand(Runtime* _runtime, const TargetDetectCommand*
 
 int runtimeGetVideoOutParams(Runtime* _runtime, bool* _videoOutEnable);
 int runtimeSetVideoOutParams(Runtime* _runtime, const bool* _videoOutEnable);
+int runtimeGetMxnParams(Runtime* _runtime, MxnParams* _mxnParams);
+int runtimeSetMxnParams(Runtime* _runtime, MxnParams* _mxnParams);
 
 int  runtimeReportTargetLocation(Runtime* _runtime, const TargetLocation* _targetLocation);
 int  runtimeReportTargetColors(Runtime* _runtime, const TargetColors* _targetColors);
