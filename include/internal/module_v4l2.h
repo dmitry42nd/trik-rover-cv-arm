@@ -25,8 +25,8 @@ typedef struct V4L2Input
   long long              m_frameCounter;
   struct v4l2_format     m_imageFormat;
 
-  void*                  m_buffers[2];
-  size_t                 m_bufferSize[2];
+  void*                  m_buffers[3];
+  size_t                 m_bufferSize[3];
 } V4L2Input;
 
 
@@ -50,4 +50,4 @@ int v4l2InputReportFPS(V4L2Input* _v4l2, long long _ms);
 } // extern "C"
 #endif // __cplusplus
 
-#endif // !TRIK_V4L2_DSP_FB_INTERNAL_MODULE_V4L2_H_
+#endif // !TRIK_V4L2_DSP_FB_INTERNAL_MODULE_V4L2_H_ 

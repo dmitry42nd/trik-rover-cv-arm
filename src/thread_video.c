@@ -55,8 +55,6 @@ static int threadVideoSelectLoop(Runtime* _runtime, CodecEngine* _ce, V4L2Input*
 
   void* frameDstPtr;
   size_t frameDstSize;
-
-
   if ((res = fbOutputGetFrame(_fb, &frameDstPtr, &frameDstSize)) != 0)
   {
     fprintf(stderr, "fbOutputGetFrame() failed: %d\n", res);
@@ -171,7 +169,6 @@ void* threadVideo(void* _arg)
     exit_code = res;
     goto exit;
   }
-
 
   if ((res = v4l2InputOpen(v4l2, runtimeCfgV4L2Input(runtime))) != 0)
   {
