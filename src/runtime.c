@@ -19,7 +19,7 @@ static const RuntimeConfig s_runtimeConfig = {
   .m_codecEngineConfig = { "dsp_server.xe674", "vidtranscode_cv" },
   .m_v4l2Config        = { "/dev/video0", 320, 240, V4L2_PIX_FMT_YUV422P },
   .m_fbConfig          = { "/dev/fb0" },
-  .m_rcConfig          = { "/run/line-sensor.in.fifo", "/run/line-sensor.out.fifo", true  }
+  .m_rcConfig          = { "/run/object-sensor.in.fifo", "/run/object-sensor.out.fifo", true  }
 };
 
 
